@@ -1,6 +1,6 @@
 # 大白的自我介绍
 
-<img src="20160307222336_3HdKQ.jpg" width="200" alt="大白形象">
+<img src="https://github.com/wujierun1234/GitDemo/blob/f26fc32badd3b9b54da95d7b36a85df743e24e55/20160307222336_3HdKQ.jpg" width="200" alt="大白形象">
 
 大家好，我是**大白**，我的身份是*个人医疗护理机器人*。以下是我的自我介绍：
 
