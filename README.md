@@ -1,6 +1,6 @@
 # 大白的自我介绍
 
-<img src="https://raw.githubusercontent.com/Winnie-Qi/dev_skills/main/images/squidward.jpg" width="200" alt="章鱼哥形象">
+<img src="https://raw.githubusercontent.com/Winnie-Qi/dev_skills/main/images/squidward.jpg" width="200" alt="大白形象">
 
 大家好，我是**大白**，我的身份是*个人医疗护理机器人*。以下是我的自我介绍：
 
@@ -14,6 +14,7 @@
 ### 我的朋友
 1. 小宏
 2. 弗雷德
+3. 神行御姐
 
 ### 重要坐标
 - 🏠 **住址**: [旧金山](https://baike.baidu.com/item/%E6%97%A7%E9%87%91%E5%B1%B1/29211) 
