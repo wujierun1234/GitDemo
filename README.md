@@ -121,3 +121,9 @@ print(tfidf_classifier.predict('邮件_files/151.txt'))
 classifier = SpamClassifier(feature_method='frequency', top_num=200)
 classifier.train()
 ```
+# 样本平衡处理
+<img src="https://github.com/wujierun1234/GitDemo/blob/b0f1fc8dd61499456fd3399964a31c76bc3074ed/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-04-08%20230007.png" width="500" alt="代码截图">
+
+ # 增加模型评估指标
+ <img src="https://github.com/wujierun1234/GitDemo/blob/b0f1fc8dd61499456fd3399964a31c76bc3074ed/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-04-08%20230007.png" width="500" alt="代码截图">
+ <img src="https://github.com/wujierun1234/GitDemo/blob/b0f1fc8dd61499456fd3399964a31c76bc3074ed/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-04-08%20230007.png" width="500" alt="代码截图">
