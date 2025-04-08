@@ -3,71 +3,96 @@
 ## classify代码截图
 <img src="https://github.com/wujierun1234/GitDemo/blob/043ae0e5bf3ea162dc833501b0fbf770e54037d2/classify.png" width="500" alt="代码截图">
 
-## 1.get_words() 函数：
+## 1.文本预处理函数：
+
+```python
+def get_text(filename):
+    """读取文本并过滤无效字符"""
+    with open(filename, 'r', encoding='utf-8') as fr:
+        text = fr.read()
+        text = re.sub(r'[.【】0-9、——。，！~\*]', '', text)
+    return text
+```
+#### 该函数负责读取文本文件并进行初步清洗：
+#### 使用open()函数读取整个文件内容
+#### 通过正则表达式re.sub()去除数字、标点等特殊字符
+#### 返回清洗后的纯文本内容
+
+## 2.分词处理函数：
 
 ```python
 def get_words(filename):
+    """读取文本并过滤无效字符和长度为1的词"""
     words = []
-    with open(filename, 'r', encoding='utf-8') as fr:
-        for line in fr:
-            line = line.strip()
-            line = re.sub(r'[.【】0-9、——。，！~\*]', '', line)
-            line = cut(line)
-            line = filter(lambda word: len(word) > 1, line)
-            words.extend(line)
+    text = get_text(filename)
+    line = cut(text)
+    line = filter(lambda word: len(word) > 1, line)
+    words.extend(line)
     return words
-all_words = []
 ```
-#### 该函数从一个文本文件中读取文本并进行处理
-#### 读取文本：通过 open() 打开文件并按行读取。
-#### 去除无效字符：使用正则表达式 re.sub() 来去除常见的无效字符（如数字、标点符号等）。
-#### 分词：利用 jieba.cut() 对每一行文本进行分词处理。
+#### 该函数该函数对文本进行精细处理：
+#### 调用get_text()获取清洗后的文本
+#### 使用jieba.cut()进行中文分词
+#### 通过filter()过滤掉单字词
+#### 返回处理后的词语列表用于构建一个包含文本数据中出现次数最多的词的词汇表：
 
-## 2.get_top_words() 函数：
-
+## 3.特征提取方法
+### 高频词特征提取
 ```python
-def get_top_words(top_num):
-    """遍历邮件建立词库后返回出现次数最多的词"""
-    filename_list = ['邮件_files/{}.txt'.format(i) for i in range(151)]
-    # 遍历邮件建立词库
+def get_top_words(top_num=100):
+    global all_words
+    filename_list = [f'邮件_files/{i}.txt' for i in range(151)]
+    all_words = []
+    
     for filename in filename_list:
         all_words.append(get_words(filename))
-    # itertools.chain()把all_words内的所有列表组合成一个列表
-    # collections.Counter()统计词个数
+    
     freq = Counter(chain(*all_words))
     return [i[0] for i in freq.most_common(top_num)]
-top_words = get_top_words(100)
 ```
-#### 该函数用于构建一个包含文本数据中出现次数最多的词的词汇表：
-#### 读取文件：通过文件名列表 filename_list 来读取多个文件（邮件文件）。
-#### 提取所有词汇：对于每个文件，调用 get_words() 来提取词汇。
-#### 统计词频：通过 itertools.chain(*all_words) 将多个文件的词汇合并为一个列表，然后使用 collections.Counter 来统计各个词的频率。
-
-## 3.优化特征选择方法
-### 提取高频词特征
+### TF-IDF特征提取
 ```python
-count_features, count_feature_names = feature_extraction(documents, method='count')
-print("高频词特征矩阵：")
-print(count_features.toarray())
-print("特征名：", count_feature_names)
+def get_tfidf_features(top_num=100):
+    filename_list = [f'邮件_files/{i}.txt' for i in range(151)]
+    corpus = [get_text(filename) for filename in filename_list]
+    
+    def jieba_tokenizer(text):
+        return [word for word in cut(text) if len(word) > 1]
+    
+    tfidf = TfidfVectorizer(tokenizer=jieba_tokenizer, max_features=top_num)
+    tfidf_matrix = tfidf.fit_transform(corpus)
+    return tfidf, tfidf.toarray()
 ```
-#### 使用 CountVectorizer 提取文本的高频词特征。
-#### toarray() 将稀疏矩阵转换为数组，便于查看。
-#### get_feature_names_out() 返回提取的特征名称（即所有被识别的词）。
+#### 特征提取对比：
+#### 高频词：统计词频最高的N个词
+#### TF-IDF：考虑词频和逆文档频率
+#### 两种方法
 
-### 提取TF-IDF特征
+## 分类器实现
+class SpamClassifier:
+    def __init__(self, feature_method='frequency', top_num=100):
+        self.feature_method = feature_method
+        self.top_num = top_num
+        self.model = MultinomialNB()
 ```python
-tfidf_features, tfidf_feature_names = feature_extraction(documents, method='tfidf')
-print("\nTF-IDF特征矩阵：")
-print(tfidf_features.toarray())
-print("特征名：", tfidf_feature_names)
+    def train(self):
+        if self.feature_method == 'frequency':
+            self.top_words = get_top_words(self.top_num)
+            # ...特征向量构建...
+        else:
+            self.tfidf_vectorizer, X = get_tfidf_features(self.top_num)
+        
+        y = np.array([1]*127 + [0]*24)
+        self.model.fit(X, y)
+    
+    def predict(self, filename):
+        # ...特征提取...
+        result = self.model.predict(current_vector.reshape(1, -1))
+        return '垃圾邮件' if result == 1 else '普通邮件'
 ```
-#### 使用 TfidfVectorizer 提取文本的 TF-IDF 特征。
-#### 和高频词特征一样，使用 toarray() 和 get_feature_names_out() 查看特征矩阵和特征名称。
-<img src="https://github.com/LZY6888/LZY1/blob/main/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-04-08%20181002.png" width="500" alt="代码截图">
+#### 分类器特点：
+#### 支持两种特征提取方式切换
+#### 使用多项式朴素贝叶斯分类器
+#### 训练数据中前127封为垃圾邮件(标记1)，后24封为普通邮件(标记0)
 
-## 4.样本平衡处理
-<img src="https://github.com/LZY6888/LZY1/blob/main/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-04-08%20181123.png" width="500" alt="代码截图">
-
-## 5.增加模型评估指标
-<img src="https://github.com/LZY6888/LZY1/blob/main/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-04-08%20181137.png" width="500" alt="代码截图">
+# 特征模式切换方法
