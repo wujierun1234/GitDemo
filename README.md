@@ -126,4 +126,4 @@ classifier.train()
 
  # 增加模型评估指标
  <img src="https://github.com/wujierun1234/GitDemo/blob/3e6aa84ec5d79005fa3db326de43cc1b84353415/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-04-08%20215443.png" width="500" alt="代码截图">
- <img src="https://github.com/wujierun1234/GitDemo/blob/b0f1fc8dd61499456fd3399964a31c76bc3074ed/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-04-08%20230007.png" width="500" alt="代码截图">
+ <img src="https://github.com/wujierun1234/GitDemo/blob/864002dc623c0c4626b0a0f75dae75c0d311d43d/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-04-08%20230031.png" width="500" alt="代码截图">
