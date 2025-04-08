@@ -69,12 +69,12 @@ def get_tfidf_features(top_num=100):
 #### 两种方法
 
 ## 分类器实现
+```python
 class SpamClassifier:
     def __init__(self, feature_method='frequency', top_num=100):
         self.feature_method = feature_method
         self.top_num = top_num
         self.model = MultinomialNB()
-```python
     def train(self):
         if self.feature_method == 'frequency':
             self.top_words = get_top_words(self.top_num)
@@ -96,3 +96,28 @@ class SpamClassifier:
 #### 训练数据中前127封为垃圾邮件(标记1)，后24封为普通邮件(标记0)
 
 # 特征模式切换方法
+## 1.高频词模式：
+```python
+# 初始化高频词分类器
+freq_classifier = SpamClassifier(feature_method='frequency')
+freq_classifier.train()
+
+# 预测示例
+print(freq_classifier.predict('邮件_files/151.txt'))
+```
+## 2.TF-IDF模式：
+```python
+# 初始化TF-IDF分类器
+tfidf_classifier = SpamClassifier(feature_method='tfidf')
+tfidf_classifier.train()
+
+# 预测示例
+print(tfidf_classifier.predict('邮件_files/151.txt'))
+```
+## 3.参数调整：
+### 可通过top_num参数调整特征数量：
+```python
+# 使用200个特征词
+classifier = SpamClassifier(feature_method='frequency', top_num=200)
+classifier.train()
+```
