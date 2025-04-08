@@ -1,7 +1,7 @@
 
 # 代码核心功能说明
 ## classify代码截图
-<img src="https://github.com/LZY6888/LZY1/blob/main/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-04-08%20180941.png" width="500" alt="代码截图">
+<img src="https://github.com/wujierun1234/GitDemo/blob/043ae0e5bf3ea162dc833501b0fbf770e54037d2/classify.png" width="500" alt="代码截图">
 
 ## 1.get_words() 函数：
 
